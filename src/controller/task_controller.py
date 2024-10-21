@@ -1,4 +1,4 @@
-from model.db import Task
+from model.doa import Task
 from model.rabbitmq import Taskqueue
 from utils.status import format_response
 import asyncio
