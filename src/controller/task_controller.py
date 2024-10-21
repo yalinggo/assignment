@@ -12,7 +12,7 @@ class TaskController():
     def __init__(self, db):
         self.task_model = Task(db)
         self.task_queue = Taskqueue()
-
+    
     async def create_task(self, msg):
         task_data = await self.task_model.create_task(msg)
         task_id = task_data['task_id']
@@ -54,10 +54,10 @@ class TaskController():
                     return
                 
                 await self.task_model.process_task(task_id)
-                # 模擬處理三秒
+                # processing to wait three seconds
                 await asyncio.sleep(3)
 
-                # 在處理的過程中再檢查一次任務狀態，避免已取消的任務繼續處理
+                # check the task status during the processing, if the task has been cancelled
                 task_check = await self.task_model.get_task_by_id(task_id)
                 if task_check and task_check['status'] == 'cancelled':
                     await self.push_data(task_id, task_check['status'])
