@@ -1,4 +1,4 @@
 #!/bin/bash
-
-export $(grep -v '^#' env/default.env | xargs)
+ENV_FILE=${ENV_FILE:-env/default.env}
+export $(grep -v '^#' "$ENV_FILE" | xargs)
 python src/main.py

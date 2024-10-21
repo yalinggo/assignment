@@ -1,4 +1,4 @@
-from model.task import Task
+from model.db import Task
 from model.rabbitmq import Taskqueue
 from utils.status import format_response
 import asyncio
@@ -13,8 +13,8 @@ class TaskController():
         self.task_model = Task(db)
         self.task_queue = Taskqueue()
 
-    async def create_task(self):
-        task_data = await self.task_model.create_task()
+    async def create_task(self, msg):
+        task_data = await self.task_model.create_task(msg)
         task_id = task_data['task_id']
         await self.task_queue.publish_task("src_task", task_id)
         return task_data
@@ -27,7 +27,8 @@ class TaskController():
             await self.task_model.cancel_task(task_id)
             logger.info(f"Task {task_id} was cancelled.")
             return format_response(status_code=200, err_code="Success")
-
+        return format_response(status_code=400, err_code="The task has been processed, it cannot be cancelled.")
+    
     async def get_all_tasks(self):
         tasks = await self.task_model.get_all_tasks()
         return tasks
