@@ -6,7 +6,7 @@ load_dotenv()
 
 # Load environment variables
 # DB
-DB_HOST = os.getenv("DB_HOST", "mongodb+srv://test:test@cluster0.jtr0rvw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+DB_HOST = os.getenv("DB_HOST", "")
 DB_NAME = os.getenv("DB_NAME", "task_db")
 DB_C_TASK = os.getenv("DB_C_TASK", "task")
 
